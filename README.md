@@ -731,12 +731,6 @@ local Slider = Tab:CreateSlider({
 })
 
 
-local Tab = Window:CreateTab("Visual")
-local Section = Tab:CreateSection("Vizual stuff")
-
-
-
-
 local Button = Tab:CreateButton({
     Name = "ESP",
     Callback = function()
