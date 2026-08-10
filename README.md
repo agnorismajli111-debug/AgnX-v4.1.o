@@ -1,12 +1,12 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "AgnX v3.o",
-   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   Name = "AgnX v4.o",
+   Icon = 11176073582, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
    LoadingTitle = "Loading...",
-   LoadingSubtitle = "by AgnX team",
-   ShowText = "AgnX v3.o", -- for mobile users to unhide Rayfield, change if you'd like
-   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+   LoadingSubtitle = "by The AgnX Team",
+   ShowText = "AgnX v4.o menu", -- for mobile users to unhide Rayfield, change if you'd like
+   Theme = "Ocean", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
    ToggleUIKeybind = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
 
@@ -18,7 +18,7 @@ local Window = Rayfield:CreateWindow({
    ConfigurationSaving = {
       Enabled = true,
       FolderName = nil, -- Create a custom folder for your hub/game
-      FileName = "AgnX v3.o"
+      FileName = "AgnX"
    },
 
    Discord = {
@@ -27,28 +27,242 @@ local Window = Rayfield:CreateWindow({
       RememberJoins = true -- Set this to false to make them join the Discord every time they load it up
    },
 
-   KeySystem = true, -- Set this to true to use our key system
+   KeySystem = True, -- Set this to true to use our key system
    KeySettings = {
-      Title = "AgnX | Key System",
+      Title = "AgnX | KeySys",
       Subtitle = "Key System",
-      Note = "Dm the owner on tiktok burgerbosi123", -- Use this to tell the user how to get a key
+      Note = "Dm the Owner on tiktok burgerbosi123", -- Use this to tell the user how to get a key
       FileName = "AgnXKey", -- It is recommended to use something unique, as other scripts using Rayfield may overwrite your key file
       SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
       GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key = {"AgnXKey111"} -- List of keys that the system will accept, can be RAW file links (pastebin, github, etc.) or simple strings ("hello", "key22")
-   }
-})
-
-local Tab = Window:CreateTab("Main")
-local Section = Tab:CreateSection("Main stuff")
+      Key = {"AgnXKey1111"} -- List of keys that the system will accept, can be RAW file links (pastebin, github, etc.) or simple strings ("hello", "key22")
 
 
+    }
+
+ })     
+    local Tab = Window:CreateTab("Main")
+    local Section = Tab:CreateSection ("Main Stuff")
 
 
 local Button = Tab:CreateButton({
-    Name = "SkinChanger",
+    Name = "ESP",
     Callback = function()
-      print ("discord.gg/2K9YuG9HYb")
+         print ("discord.gg/2K9YuG9HYb")     
+
+         -- Simple player highlighting and nametag script with toggle feature now
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local LocalPlayer = Players.LocalPlayer
+local MaxDistance = 400.5 -- Range in studs for nametags to show
+ 
+-- Toggle variable
+local NametagsEnabled = true 
+ 
+-- Function to create a nametag for a player
+local function CreateNametag(Player)
+    if Player == LocalPlayer then return end -- Skip local player
+ 
+    local function SetupNametag(Character)
+        local Head = Character:FindFirstChild("Head")
+        if not Head then return end -- If no head, exit
+ 
+        -- Remove existing nametag if it exists
+        local OldNametag = Head:FindFirstChild("Nametag")
+        if OldNametag then
+            OldNametag:Destroy()
+        end
+ 
+        local BillboardGui = Instance.new("BillboardGui")
+        BillboardGui.Name = "Nametag"
+        BillboardGui.Adornee = Head
+        BillboardGui.Size = UDim2.new(0, 75, 0, 150)
+        BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+        BillboardGui.AlwaysOnTop = true
+ 
+        local TextLabel = Instance.new("TextLabel")
+        TextLabel.Size = UDim2.new(1, 0, 1, 0)
+        TextLabel.Text = Player.Name
+        TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- White color
+        TextLabel.BackgroundTransparency = 1
+        TextLabel.TextStrokeTransparency = 0.75 -- Outline for better visibility
+        TextLabel.Font = Enum.Font.Code
+        TextLabel.TextScaled = true
+        TextLabel.Parent = BillboardGui
+ 
+        BillboardGui.Parent = Head
+ 
+        -- Function to update visibility based on distance and toggle
+        local function UpdateVisibility()
+            if NametagsEnabled and Player.Character and Player.Character:FindFirstChild("Head") and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head") then
+                local Distance = (Player.Character.Head.Position - LocalPlayer.Character.Head.Position).Magnitude
+                BillboardGui.Enabled = (Distance <= MaxDistance)
+            else
+                BillboardGui.Enabled = false
+            end
+        end
+ 
+        -- Monitor visibility
+        local Connection
+        Connection = RunService.Heartbeat:Connect(function()
+            if Player.Character and Player.Character:FindFirstChild("Head") then
+                UpdateVisibility()
+            else
+                BillboardGui:Destroy() -- Clean up nametag when player dies
+                Connection:Disconnect()
+            end
+        end)
+    end
+ 
+    -- Apply when character spawns or respawns
+    if Player.Character then
+        SetupNametag(Player.Character)
+    end
+    Player.CharacterAdded:Connect(SetupNametag)
+end
+ 
+-- Function to apply ESP/Highlight to a player
+local function ApplyHighlight(Player)
+    if Player == LocalPlayer then return end -- Skip local player
+ 
+    local function SetupHighlight(Character)
+        -- Remove old highlights
+        for _, v in pairs(Character:GetChildren()) do
+            if v:IsA("Highlight") then
+                v:Destroy()
+            end
+        end
+ 
+        local Highlighter = Instance.new("Highlight")
+        Highlighter.Parent = Character
+ 
+        local function UpdateFillColor()
+            local DefaultColor = Color3.fromRGB(255, 48, 51) -- Default red color
+            Highlighter.FillColor = Player.TeamColor and Player.TeamColor.Color or DefaultColor
+        end
+ 
+        UpdateFillColor()
+        Player:GetPropertyChangedSignal("TeamColor"):Connect(UpdateFillColor)
+ 
+        -- Remove highlight when player dies
+        local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+        if Humanoid then
+            Humanoid.Died:Connect(function()
+                Highlighter:Destroy()
+            end)
+        end
+    end
+ 
+    -- Apply highlight on spawn and respawn
+    if Player.Character then
+        SetupHighlight(Player.Character)
+    end
+    Player.CharacterAdded:Connect(SetupHighlight)
+end
+ 
+-- Function to toggle nametags
+local function ToggleNametags()
+    NametagsEnabled = not NametagsEnabled -- Flip the toggle state
+    print("Nametags Enabled:", NametagsEnabled)
+ 
+    for _, Player in pairs(Players:GetPlayers()) do
+        if Player ~= LocalPlayer and Player.Character and Player.Character:FindFirstChild("Head") then
+            local Nametag = Player.Character.Head:FindFirstChild("Nametag")
+            if Nametag then
+                Nametag.Enabled = NametagsEnabled
+            end
+        end
+    end
+end
+ 
+-- Bind the toggle function to the "[" key
+UserInputService.InputBegan:Connect(function(Input, GameProcessed)
+    if not GameProcessed and Input.KeyCode == Enum.KeyCode.LeftBracket then
+        ToggleNametags()
+    end
+end)
+ 
+-- Apply ESP and Nametags to all current players
+for _, Player in pairs(Players:GetPlayers()) do
+    CreateNametag(Player)
+    ApplyHighlight(Player)
+end
+ 
+-- Apply ESP and Nametags to players who join later
+Players.PlayerAdded:Connect(function(Player)
+    CreateNametag(Player)
+    ApplyHighlight(Player)
+end)
+-- 4/3/2025 X:XXPM (Script Updated)
+-- 4/4/2025 1:59PM (Edit / Update)   
+         
+    end,
+})
+
+
+local Toggle = Tab:CreateToggle({
+    Name = "Fly",
+    CurrentValue = false,
+    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag
+    Callback = function(Value)
+        -- The function that takes place when the toggle is pressed
+        -- The variable (Value) is a boolean on whether the toggle is true or false
+    local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local jumpingActive = false
+local modeActive = false
+local connection
+
+local function setupCharacter(character)
+    local humanoid = character:WaitForChild("Humanoid")
+    local rootPart = character:WaitForChild("HumanoidRootPart")
+
+    local function toggle()
+        modeActive = not modeActive
+        if modeActive then
+            connection = RunService.Heartbeat:Connect(function()
+                if humanoid:GetState() == Enum.HumanoidStateType.Freefall or humanoid:GetState() == Enum.HumanoidStateType.Jumping then
+                    local moveDir = rootPart.CFrame.LookVector
+                    local force = Instance.new("BodyVelocity")
+                    force.Velocity = moveDir * 50
+                    force.MaxForce = Vector3.new(1e5, 1e5, 1e5)
+                    force.Parent = rootPart
+                    game:GetService("Debris"):AddItem(force, 0.2)
+                end
+            end)
+        else
+            if connection then connection:Disconnect() end
+        end
+    end
+
+    local function onInputBegan(input, gameProcessed)
+        if gameProcessed then return end
+        if input.KeyCode == Enum.KeyCode.V then       
+            humanoid.Jump = true       
+            toggle()
+        end
+    end
+
+    UserInputService.InputBegan:Connect(onInputBegan)
+end
+
+player.CharacterAdded:Connect(function(character)
+    setupCharacter(character)
+end)
+
+if player.Character then
+    setupCharacter(player.Character)
+        
+    end,
+})
+
+local Button = Tab:CreateButton({
+    Name = "skinchanger",
+    Callback = function()
+        -- The function that takes place when the button is pressed
     
 
 -- AC Bypass
@@ -477,15 +691,15 @@ if _vmMod then
         end
         return _origNew(repData, cliItm)
     end
-            end
+                end
     end,
 })
-
+            
 
 local Button = Tab:CreateButton({
     Name = "RageBot",
     Callback = function()
-      print ("discord.gg/2K9YuG9HYb")
+        -- The function that takes place when the button is pressed
     local __a1b2c3 = setmetatable({}, {
     __index = function(__d4e5f6, __g7h8i9)
         local __j0k1l2, __m3n4o5 = pcall(function()
@@ -688,200 +902,11 @@ do
     end
 
     __i1j2k3:__init()
-            end
-    end,
-})
-
-local Button = Tab:CreateButton({
-    Name = "stretched resolution",
-    Callback = function()
-            print ("balls")
-    local Camera = workspace.CurrentCamera
-
-if getgenv().StretchActive == nil then
-    game:GetService("RunService").RenderStepped:Connect(function()
-        Camera.CFrame = Camera.CFrame * CFrame.new(0, 0, 0, 1, 0, 0, 0, 0.67, 0, 0, 0, 1)
-    end)
-end
-
-getgenv().StretchActive = true
-    end,
-})
-
-local Toggle = Tab:CreateToggle({
-    Name = "put it for fun ",
-    CurrentValue = false,
-    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag
-    Callback = function(Value)
-        -- The function that takes place when the toggle is pressed
-        -- The variable (Value) is a boolean on whether the toggle is true or false
-    end,
-})
-local Slider = Tab:CreateSlider({
-    Name = "idk",
-    Range = {0, 100},
-    Increment = 1000000000000,
-    Suffix = "not work",
-    CurrentValue = 10,
-    Flag = "Slider1", -- A flag is the identifier for saving/loading this slider
-    Callback = function(Value)
-        -- The function that takes place when the slider changes
-        -- The variable (Value) is a number which shows the slider’s current value
+                end
     end,
 })
 
 
-local Button = Tab:CreateButton({
-    Name = "ESP",
-    Callback = function()
-      print ("discord.gg/2K9YuG9HYb")
 
 
--- Simple player highlighting and nametag script with toggle feature now
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-local LocalPlayer = Players.LocalPlayer
-local MaxDistance = 400.5 -- Range in studs for nametags to show
- 
--- Toggle variable
-local NametagsEnabled = true 
- 
--- Function to create a nametag for a player
-local function CreateNametag(Player)
-    if Player == LocalPlayer then return end -- Skip local player
- 
-    local function SetupNametag(Character)
-        local Head = Character:FindFirstChild("Head")
-        if not Head then return end -- If no head, exit
- 
-        -- Remove existing nametag if it exists
-        local OldNametag = Head:FindFirstChild("Nametag")
-        if OldNametag then
-            OldNametag:Destroy()
-        end
- 
-        local BillboardGui = Instance.new("BillboardGui")
-        BillboardGui.Name = "Nametag"
-        BillboardGui.Adornee = Head
-        BillboardGui.Size = UDim2.new(0, 75, 0, 150)
-        BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
-        BillboardGui.AlwaysOnTop = true
- 
-        local TextLabel = Instance.new("TextLabel")
-        TextLabel.Size = UDim2.new(1, 0, 1, 0)
-        TextLabel.Text = Player.Name
-        TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- White color
-        TextLabel.BackgroundTransparency = 1
-        TextLabel.TextStrokeTransparency = 0.75 -- Outline for better visibility
-        TextLabel.Font = Enum.Font.Code
-        TextLabel.TextScaled = true
-        TextLabel.Parent = BillboardGui
- 
-        BillboardGui.Parent = Head
- 
-        -- Function to update visibility based on distance and toggle
-        local function UpdateVisibility()
-            if NametagsEnabled and Player.Character and Player.Character:FindFirstChild("Head") and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head") then
-                local Distance = (Player.Character.Head.Position - LocalPlayer.Character.Head.Position).Magnitude
-                BillboardGui.Enabled = (Distance <= MaxDistance)
-            else
-                BillboardGui.Enabled = false
-            end
-        end
- 
-        -- Monitor visibility
-        local Connection
-        Connection = RunService.Heartbeat:Connect(function()
-            if Player.Character and Player.Character:FindFirstChild("Head") then
-                UpdateVisibility()
-            else
-                BillboardGui:Destroy() -- Clean up nametag when player dies
-                Connection:Disconnect()
-            end
-        end)
-    end
- 
-    -- Apply when character spawns or respawns
-    if Player.Character then
-        SetupNametag(Player.Character)
-    end
-    Player.CharacterAdded:Connect(SetupNametag)
-end
- 
--- Function to apply ESP/Highlight to a player
-local function ApplyHighlight(Player)
-    if Player == LocalPlayer then return end -- Skip local player
- 
-    local function SetupHighlight(Character)
-        -- Remove old highlights
-        for _, v in pairs(Character:GetChildren()) do
-            if v:IsA("Highlight") then
-                v:Destroy()
-            end
-        end
- 
-        local Highlighter = Instance.new("Highlight")
-        Highlighter.Parent = Character
- 
-        local function UpdateFillColor()
-            local DefaultColor = Color3.fromRGB(255, 48, 51) -- Default red color
-            Highlighter.FillColor = Player.TeamColor and Player.TeamColor.Color or DefaultColor
-        end
- 
-        UpdateFillColor()
-        Player:GetPropertyChangedSignal("TeamColor"):Connect(UpdateFillColor)
- 
-        -- Remove highlight when player dies
-        local Humanoid = Character:FindFirstChildOfClass("Humanoid")
-        if Humanoid then
-            Humanoid.Died:Connect(function()
-                Highlighter:Destroy()
-            end)
-        end
-    end
- 
-    -- Apply highlight on spawn and respawn
-    if Player.Character then
-        SetupHighlight(Player.Character)
-    end
-    Player.CharacterAdded:Connect(SetupHighlight)
-end
- 
--- Function to toggle nametags
-local function ToggleNametags()
-    NametagsEnabled = not NametagsEnabled -- Flip the toggle state
-    print("Nametags Enabled:", NametagsEnabled)
- 
-    for _, Player in pairs(Players:GetPlayers()) do
-        if Player ~= LocalPlayer and Player.Character and Player.Character:FindFirstChild("Head") then
-            local Nametag = Player.Character.Head:FindFirstChild("Nametag")
-            if Nametag then
-                Nametag.Enabled = NametagsEnabled
-            end
-        end
-    end
-end
- 
--- Bind the toggle function to the "[" key
-UserInputService.InputBegan:Connect(function(Input, GameProcessed)
-    if not GameProcessed and Input.KeyCode == Enum.KeyCode.LeftBracket then
-        ToggleNametags()
-    end
-end)
- 
--- Apply ESP and Nametags to all current players
-for _, Player in pairs(Players:GetPlayers()) do
-    CreateNametag(Player)
-    ApplyHighlight(Player)
-end
- 
--- Apply ESP and Nametags to players who join later
-Players.PlayerAdded:Connect(function(Player)
-    CreateNametag(Player)
-    ApplyHighlight(Player)
-end)
-
-
-            
 Rayfield:LoadConfiguration()
