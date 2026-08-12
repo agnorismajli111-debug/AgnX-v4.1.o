@@ -13,7 +13,7 @@ Library.ForceCheckbox = false -- Forces AddToggle to AddCheckbox
 Library.ShowToggleFrameInKeybinds = true -- Make toggle keybinds work inside the keybinds UI (aka adds a toggle to the UI). Good for mobile users (Default value = true)
 
 local Window = Library:CreateWindow({
-	Title = "AgnX v4.o",
+	Title = "AgnX v4.o (Free)",
 	Footer = "Version: 4.0 | Free | discord.gg/2K9YuG9HYb",
 	Icon = nil,
 	NotifySide = "Right",
