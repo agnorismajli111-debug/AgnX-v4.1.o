@@ -14,7 +14,7 @@ Library.ShowToggleFrameInKeybinds = true -- Make toggle keybinds work inside the
 
 local Window = Library:CreateWindow({
 	Title = "AgnX v4.o",
-	Footer = "Version: 4.0 | Paid | discord.gg/2K9YuG9HYb",
+	Footer = "Version: 4.0 | Free | discord.gg/2K9YuG9HYb",
 	Icon = nil,
 	NotifySide = "Right",
 	ShowCustomCursor = true,
